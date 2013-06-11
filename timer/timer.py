@@ -21,7 +21,7 @@ class Timer(object):
         self.on_exit()
 
     def on_exit(self):
-        print '{:4f}'.format(self.elapsed)
+        pass
 
     def start(self):
         self.__enter__()
@@ -50,7 +50,9 @@ class LogTimer(Timer):
         self.log(message)
 
 
-if __name__ == '__main__':
+def log_demo():
+
+    # LogTimer demo
     import logging
     logging.basicConfig()
     log = logging.getLogger('test')
@@ -61,8 +63,37 @@ if __name__ == '__main__':
             retval += i
     log.info(retval)
 
+def basic_demo():
+    # basic timer demo
     retval = 0
     with Timer() as a:
         for i in range(10000):
             retval += 1
         print a.elapsed
+
+def start_stop_demo():
+    # start / stop demo
+    def fib(x):
+        p0 = 0
+        p1 = 1
+
+        yield p1
+
+        for i in xrange(x):
+            yield p0 + p1
+            new = p0 + p1
+            p0 = p1
+            p1 = new
+
+    t = Timer()
+    t.start()
+
+    print list(fib(10))
+
+    t.stop()
+    print t.elapsed
+
+if __name__ == '__main__':
+    basic_demo()
+    start_stop_demo()
+    log_demo()
